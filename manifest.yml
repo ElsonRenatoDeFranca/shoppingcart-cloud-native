@@ -2,7 +2,7 @@ applications:
 - name: shopping-cart-cloud-native
   path: ./target/cart-service-0.0.1-SNAPSHOT.jar
   routes:
-    - route: shopping-cart-service.cfapps.io
+    - route: shopping-cart-service-cloud-native.cfapps.io
   memory: 800MB
   instances: 1
   services:
