@@ -3,7 +3,8 @@ This project provides a basic idea about how to build an application that adhere
 
 1- In order to run this application you have to have installed locally:
 
-1.1) A build tool (in this case, Apache Maven);
+1.1) A build tool (in this case, Apache Maven
+
 1.2) Pivotal Cloud Foundry CLI (to push your application into PCF environment)
 
 2- Register to create a trial account at https://console.run.pivotal.io 
