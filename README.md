@@ -16,7 +16,21 @@ This project provides a basic idea about how to build an application that adhere
 3.1) cf login -a api.run.pivotal.io
 
 3.2) cf push
+be deployed and started up unde the development section
+
+Test your application
+
 
 4- Navigate to https://console.run.pivotal.io and log in to your workspace:
 
-4.1) Your app should be deployed and started up unde the development section
+4.1) Your app should 
+
+4.2) Use Postman to consume the webservices:
+
+4.3) GET - https://shopping-cart-service-cloud-native.cfapps.io/carts/{CART_ID}
+
+4.3) POST - https://shopping-cart-service-cloud-native.cfapps.io/carts
+
+4.4) POST - https://shopping-cart-service-cloud-native.cfapps.io/carts/{CART_ID}/products
+
+
