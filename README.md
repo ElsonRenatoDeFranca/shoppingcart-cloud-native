@@ -19,4 +19,4 @@ This project provides a basic idea about how to build an application that adhere
 
 4- Navigate to https://console.run.pivotal.io and log in to your workspace:
 
-4.1) You app should be deployed and started up unde the development section
+4.1) Your app should be deployed and started up unde the development section
