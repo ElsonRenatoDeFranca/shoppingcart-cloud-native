@@ -14,4 +14,5 @@ This project provides a basic idea about how to build an application that adhere
 3- Push your application into Pivotal Cloud Foundry environment
 
 3.1) cf login -a api.run.pivotal.io
+
 3.2) cf push
