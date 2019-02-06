@@ -9,4 +9,4 @@ applications:
     - shopping-cart-db
   env:
     SPRING_PROFILES_ACTIVE: pcf
-    products.service.url: https://product-service.apps.dev.pcf-aws.com
+    products.service.url: https://product-service-wipro.cfapps.io

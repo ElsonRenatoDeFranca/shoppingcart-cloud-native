@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.shoppingservice</groupId>
-    <artifactId>cart-service</artifactId>
+    <artifactId>cart-service-elson</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cart-service</name>
+    <name>cart-service-elson</name>
     <description>Shopping Cart Service</description>
 
     <properties>
