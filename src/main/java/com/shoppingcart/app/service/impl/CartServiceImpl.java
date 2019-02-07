@@ -27,7 +27,8 @@ public class CartServiceImpl implements ICartService {
     }
 
     @Override
-    public Cart createCart(Cart newCart) {
+    public Cart createCart() {
+        Cart newCart = new Cart();
         return cartRepository.save(newCart);
     }
 
@@ -35,7 +36,7 @@ public class CartServiceImpl implements ICartService {
     @Transactional
     public Cart addProduct(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException{
 
-        Product searchedProduct = productService.getProductById(product.getId());
+        Product searchedProduct = productService.getProductById(product.getProductId());
         Cart cart = retrieveCartById(Long.parseLong(cartId));
 
         if (searchedProduct != null) {

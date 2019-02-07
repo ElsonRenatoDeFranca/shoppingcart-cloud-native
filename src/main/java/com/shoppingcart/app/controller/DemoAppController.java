@@ -41,8 +41,8 @@ public class DemoAppController {
     }
 
     @RequestMapping(method=RequestMethod.POST, value="/carts")
-    public ResponseEntity<Cart> createCart(@RequestBody Cart cart) {
-        Cart persistedCart = cartService.createCart(cart);
+    public ResponseEntity<Cart> createCart() {
+        Cart persistedCart = cartService.createCart();
 
         if(null != persistedCart.getId()){
             return new ResponseEntity<> (persistedCart,HttpStatus.OK);
