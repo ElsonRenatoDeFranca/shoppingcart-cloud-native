@@ -11,6 +11,10 @@ This project provides a basic idea about how to build an application that adhere
 
 2.1) Once you have created the account and logged in to your workspace you have to create a Mysql instance as a service in PCF environment (The service instance name must be exactly the same one provided in the 'manifest.yml' file);
 
+2.2) Your 'manifest.yml' file can be validated with the tool below:
+
+   https://codebeautify.org/yaml-validator#
+
 3- Build the application using the build tool:
 
   3.1) mvn clean package
