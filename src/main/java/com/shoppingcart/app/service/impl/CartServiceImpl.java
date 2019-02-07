@@ -36,7 +36,7 @@ public class CartServiceImpl implements ICartService {
     @Transactional
     public Cart addProduct(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException{
 
-        Product searchedProduct = productService.getProductById(product.getProductId());
+        Product searchedProduct = productService.getProductById(product.getId());
         Cart cart = retrieveCartById(Long.parseLong(cartId));
 
         if (searchedProduct != null) {
