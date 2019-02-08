@@ -4,6 +4,7 @@ import com.shoppingcart.app.entity.Product;
 import com.shoppingcart.app.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ public class ProductServiceImpl implements IProductService {
     private String remoteProductUrl;
 
     @Override
+    @Cacheable("products")
     public Product getProductById(Long productId) {
         ResponseEntity<Product> responseEntity = this.restTemplate.exchange(remoteProductUrl + productId, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), Product.class);
         Product productResult = responseEntity.getBody();
