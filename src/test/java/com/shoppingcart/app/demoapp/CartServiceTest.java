@@ -8,6 +8,7 @@ import com.shoppingcart.app.repository.CartRepository;
 import com.shoppingcart.app.service.ICartService;
 import com.shoppingcart.app.service.IProductService;
 import com.shoppingcart.app.service.impl.CartServiceImpl;
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
@@ -150,15 +152,12 @@ public class CartServiceTest {
         when(productService.getProductById(eq(expectedProductId))).thenReturn(productMock);
 
         Cart newCart = cartService.addProduct(String.valueOf(mockCart.getId()),productMock);
-
-        assertThat(newCart, hasProperty("products", notNullValue()));
-        assertThat(newCart, hasProperty("products", hasItem(Product.class)));
-
-
+        assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(notNullValue())))));
+        assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(equalTo(expectedProductId))))));
     }
 
 
-        private Cart createEmptyCart(Long cartId, boolean emptyCart){
+    private Cart createEmptyCart(Long cartId, boolean emptyCart){
 
         Cart newCart = new Cart();
 
