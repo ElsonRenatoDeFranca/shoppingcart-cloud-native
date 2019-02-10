@@ -3,6 +3,7 @@ package com.shoppingcart.app.demoapp;
 import com.shoppingcart.app.entity.Cart;
 import com.shoppingcart.app.entity.Product;
 import com.shoppingcart.app.exception.CartNotFoundException;
+import com.shoppingcart.app.exception.ProductNotFoundException;
 import com.shoppingcart.app.repository.CartRepository;
 import com.shoppingcart.app.service.ICartService;
 import com.shoppingcart.app.service.IProductService;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -115,7 +117,48 @@ public class CartServiceTest {
         assertThat(newCart, hasProperty("products", is(notNullValue())));
     }
 
-    private Cart createEmptyCart(Long cartId, boolean emptyCart){
+    @Test
+    public void addProductToCart_shouldReturnProductNotFoundException_whenNonExistentProductWasAddedToCart() throws CartNotFoundException, ProductNotFoundException {
+
+        Cart mockCart = createEmptyCart(1000L, false);
+        Product productMock = mockCart.getProducts().get(0);
+        Long cartExpectedId = 1000L;
+        Long expectedProductId = 10L;
+
+        //When
+        when(cartRepository.findById(eq(cartExpectedId))).thenReturn(Optional.of(mockCart));
+        when(productService.getProductById(eq(expectedProductId))).thenReturn(productMock);
+        thrown.expect(ProductNotFoundException.class);
+
+        Cart newCart = cartService.addProduct(String.valueOf(mockCart.getId()),productMock);
+
+        assertThat(newCart, hasProperty("products", nullValue()));
+
+    }
+
+
+    @Test
+    public void addProductToCart_shouldReturnCartWithProducts_whenProductsWereAddedToTheCart() throws CartNotFoundException, ProductNotFoundException {
+
+        Cart mockCart = createEmptyCart(1000L, false);
+        Product productMock = mockCart.getProducts().get(0);
+        Long cartExpectedId = 1000L;
+        Long expectedProductId = 1L;
+
+        //When
+        when(cartRepository.findById(eq(cartExpectedId))).thenReturn(Optional.of(mockCart));
+        when(productService.getProductById(eq(expectedProductId))).thenReturn(productMock);
+
+        Cart newCart = cartService.addProduct(String.valueOf(mockCart.getId()),productMock);
+
+        assertThat(newCart, hasProperty("products", notNullValue()));
+        assertThat(newCart, hasProperty("products", hasItem(Product.class)));
+
+
+    }
+
+
+        private Cart createEmptyCart(Long cartId, boolean emptyCart){
 
         Cart newCart = new Cart();
 
