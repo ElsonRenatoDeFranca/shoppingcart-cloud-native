@@ -22,21 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -122,6 +116,7 @@ public class CartServiceTest {
     @Test
     public void addProductToCart_shouldReturnProductNotFoundException_whenNonExistentProductWasAddedToCart() throws CartNotFoundException, ProductNotFoundException {
 
+        //Given
         Cart mockCart = createEmptyCart(1000L, false);
         Product productMock = mockCart.getProducts().get(0);
         Long cartExpectedId = 1000L;
@@ -134,6 +129,7 @@ public class CartServiceTest {
 
         Cart newCart = cartService.addProduct(String.valueOf(mockCart.getId()),productMock);
 
+        //Then
         assertThat(newCart, hasProperty("products", nullValue()));
 
     }
@@ -142,6 +138,7 @@ public class CartServiceTest {
     @Test
     public void addProductToCart_shouldReturnCartWithProducts_whenProductsWereAddedToTheCart() throws CartNotFoundException, ProductNotFoundException {
 
+        //Given
         Cart mockCart = createEmptyCart(1000L, false);
         Product productMock = mockCart.getProducts().get(0);
         Long cartExpectedId = 1000L;
@@ -151,6 +148,7 @@ public class CartServiceTest {
         when(cartRepository.findById(eq(cartExpectedId))).thenReturn(Optional.of(mockCart));
         when(productService.getProductById(eq(expectedProductId))).thenReturn(productMock);
 
+        //Then
         Cart newCart = cartService.addProduct(String.valueOf(mockCart.getId()),productMock);
         assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(notNullValue())))));
         assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(equalTo(expectedProductId))))));

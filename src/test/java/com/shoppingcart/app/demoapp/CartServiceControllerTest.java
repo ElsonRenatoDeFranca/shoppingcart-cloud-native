@@ -1,6 +1,23 @@
 package com.shoppingcart.app.demoapp;
 
+import com.shoppingcart.app.entity.Product;
+import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 
 import static io.restassured.RestAssured.when;
@@ -12,28 +29,26 @@ import static io.restassured.RestAssured.when;
 public class CartServiceControllerTest {
 
 
-    //@Test
-    public void whenCartIsCreated_thenOK() {
-        when().request("HEAD", "/carts").then().statusCode(200);
+    @Test
+    public void retrieveCartById_shouldReturn200_whenCartIsFound() {
 
-        /*
-        assertThat(responseVO, hasProperty("propertyName1e  ", nullValue()));
-        assertThat(responseVO,  hasProperty("mylist",
-        org.hamcrest.Matchers.<ObjectInsideTheList>hasItems(allOf(hasProperty("propertyName1", notNullValue()), hasProperty("propertyName2", notNullValue()) ))));
-
-
-        assertThat(responseVO, hasProperty("mylist",
-                org.hamcrest.Matchers.<ObjectInsideTheList>hasItems(
-                        allOf(
-                                hasProperty("propertyName1", equalTo(getPropertyFromObjectInsideTheList())),
-                                hasProperty("propertyName2", equalTo(expectedResult))
-                        )
-                )
-        ));
-
-         */
-
+        when().get("/carts/{cartId}",1).
+                then().
+                body("cart.cartId",equalTo(1));
 
     }
+
+    @Test
+    public void retrieveCartById_shouldReturn400_whenCartIdIsNotFound() {
+
+        when().
+                get("/carts/{cartId}", 1).
+                then().
+                statusCode(400).
+                body("cart.id", equalTo(1),
+                        "cart.products.id", hasItems(1));
+
+    }
+
 
 }
