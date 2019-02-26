@@ -127,7 +127,7 @@ public class CartServiceTest {
         when(productService.getProductById(eq(expectedProductId))).thenReturn(productMock);
         thrown.expect(ProductNotFoundException.class);
 
-        Cart newCart = cartService.addProduct(String.valueOf(mockCart.getId()),productMock);
+        Cart newCart = cartService.addProductToCart(String.valueOf(mockCart.getId()),productMock);
 
         //Then
         assertThat(newCart, hasProperty("products", nullValue()));
@@ -149,10 +149,33 @@ public class CartServiceTest {
         when(productService.getProductById(eq(expectedProductId))).thenReturn(productMock);
 
         //Then
-        Cart newCart = cartService.addProduct(String.valueOf(mockCart.getId()),productMock);
+        Cart newCart = cartService.addProductToCart(String.valueOf(mockCart.getId()),productMock);
         assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(notNullValue())))));
         assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(equalTo(expectedProductId))))));
     }
+
+    @Test
+    public void removeProductFromCart_shouldReturnCartWithProducts_whenProductsWereRemovedFromCart() throws CartNotFoundException, ProductNotFoundException {
+
+        //Given
+        Cart mockCart = createEmptyCart(1000L, false);
+        Product productMock = mockCart.getProducts().get(0);
+        Long cartExpectedId = 1000L;
+        Long expectedProductId = 1L;
+
+        //When
+        when(cartRepository.findById(eq(cartExpectedId))).thenReturn(Optional.of(mockCart));
+        when(productService.getProductById(eq(expectedProductId))).thenReturn(productMock);
+//        verify(cartRepository, times(1)).deleteById(eq(expectedProductId));
+
+
+        //Then
+        Cart newCart = cartService.removeProductFromCart(String.valueOf(mockCart.getId()),productMock);
+
+        assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(notNullValue())))));
+        assertThat(newCart, hasProperty("products", hasItem(Matchers.<Product>hasProperty("id", is(equalTo(expectedProductId))))));
+    }
+
 
 
     private Cart createEmptyCart(Long cartId, boolean emptyCart){

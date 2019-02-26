@@ -30,7 +30,13 @@ public interface ICartService {
      * @param cartId
      * @param product
      */
-    Cart addProduct(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException;
+    Cart addProductToCart(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException;
+
+    /**
+     *
+     * @param cartId
+     */
+    Cart removeProductFromCart(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException;
 
 
 }

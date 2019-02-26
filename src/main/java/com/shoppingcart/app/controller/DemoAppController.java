@@ -4,6 +4,7 @@ package com.shoppingcart.app.controller;
 import com.shoppingcart.app.entity.Cart;
 import com.shoppingcart.app.entity.Product;
 import com.shoppingcart.app.exception.CartNotFoundException;
+import com.shoppingcart.app.exception.EmptyCartException;
 import com.shoppingcart.app.exception.ProductNotFoundException;
 import com.shoppingcart.app.service.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class DemoAppController {
     @RequestMapping(method=RequestMethod.POST, value="/carts/{cartId}/products",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cart> addProductsToCart(@PathVariable(name="cartId") String cartId, @RequestBody Product product) {
         try {
-            Cart persistedCart = cartService.addProduct(cartId, product);
+            Cart persistedCart = cartService.addProductToCart(cartId, product);
             return new ResponseEntity<> (persistedCart,HttpStatus.OK);
         } catch (ProductNotFoundException prodEx) {
             System.err.println(prodEx.getMessage());
@@ -65,6 +66,21 @@ public class DemoAppController {
         }
         catch(CartNotFoundException cartEx){
             System.err.println(cartEx.getMessage());
+            return new ResponseEntity<>(getDummyCart(cartId), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @RequestMapping(method=RequestMethod.DELETE, value="/carts/{cartId}/products",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Cart> removeProductsFromCart(@PathVariable(name="cartId") String cartId, @RequestBody Product product) {
+
+        try {
+            Cart persistedCart = cartService.removeProductFromCart(cartId, product);
+            return new ResponseEntity<> (persistedCart,HttpStatus.OK);
+        } catch (ProductNotFoundException prodEx) {
+            return new ResponseEntity<>(getDummyCart(cartId), HttpStatus.BAD_REQUEST);
+        }
+        catch(CartNotFoundException cartEx){
             return new ResponseEntity<>(getDummyCart(cartId), HttpStatus.BAD_REQUEST);
         }
 

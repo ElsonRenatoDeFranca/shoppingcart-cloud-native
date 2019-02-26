@@ -4,19 +4,26 @@ import com.shoppingcart.app.constants.ShoppingCartConstants;
 import com.shoppingcart.app.entity.Cart;
 import com.shoppingcart.app.entity.Product;
 import com.shoppingcart.app.exception.CartNotFoundException;
+import com.shoppingcart.app.exception.EmptyCartException;
 import com.shoppingcart.app.exception.ProductNotFoundException;
 import com.shoppingcart.app.repository.CartRepository;
+import com.shoppingcart.app.repository.ProductRepository;
 import com.shoppingcart.app.service.ICartService;
 import com.shoppingcart.app.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CartServiceImpl implements ICartService {
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private IProductService productService;
@@ -34,7 +41,7 @@ public class CartServiceImpl implements ICartService {
 
     @Override
     @Transactional
-    public Cart addProduct(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException{
+    public Cart addProductToCart(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException{
 
         Product searchedProduct = productService.getProductById(product.getId());
         Cart cart = retrieveCartById(Long.parseLong(cartId));
@@ -48,5 +55,19 @@ public class CartServiceImpl implements ICartService {
 
         return cart;
     }
+
+
+    @Override
+    @Transactional
+    public Cart removeProductFromCart(String cartId, Product product) throws ProductNotFoundException, CartNotFoundException{
+
+        Cart cart = retrieveCartById(Long.parseLong(cartId));
+        productRepository.delete(product);
+        cart.getProducts().removeIf(product1 -> product.equals(product));
+
+        return cart;
+    }
+
+
 
 }
