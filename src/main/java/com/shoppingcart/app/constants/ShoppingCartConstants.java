@@ -7,5 +7,5 @@ public interface ShoppingCartConstants {
 
     String PRODUCT_NOT_FOUND_ERROR_MESSAGE = "Product was not found in the remote service";
     String CART_NOT_FOUND_ERROR_MESSAGE = "Cart not found";
-    String EMPTY_CART_EXCEPTION_ERROR_MESSAGE = "Cart is empty";
+    String CATEGORY_NOT_FOUND_ERROR_MESSAGE = "Category not found";
 }

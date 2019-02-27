@@ -2,11 +2,13 @@ package com.shoppingcart.app.controller;
 
 
 import com.shoppingcart.app.entity.Cart;
+import com.shoppingcart.app.entity.Category;
 import com.shoppingcart.app.entity.Product;
 import com.shoppingcart.app.exception.CartNotFoundException;
 import com.shoppingcart.app.exception.EmptyCartException;
 import com.shoppingcart.app.exception.ProductNotFoundException;
 import com.shoppingcart.app.service.ICartService;
+import com.shoppingcart.app.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,16 +27,17 @@ public class DemoAppController {
     @Autowired
     private ICartService cartService;
 
+    @Autowired
+    private ICategoryService categoryService;
+
     @RequestMapping(method=RequestMethod.GET,value="/carts/{cartId}")
     public ResponseEntity<Cart> retrieveCartById(@PathVariable Long cartId){
 
         try {
-
             Cart cart = cartService.retrieveCartById(cartId);
             return new ResponseEntity<>(cart, HttpStatus.OK);
 
         }catch(CartNotFoundException cartEx){
-            System.err.println(cartEx.getMessage());
             return new ResponseEntity<> (getDummyCart(String.valueOf(cartId)),HttpStatus.BAD_REQUEST);
         }
 
@@ -53,6 +56,19 @@ public class DemoAppController {
 
 
     }
+
+    @RequestMapping(method=RequestMethod.POST, value="/category")
+    public ResponseEntity<Category> createCategory() {
+        Category persistedCategory = categoryService.createCategory();
+
+        if(null != persistedCategory.getCategoryId()){
+            return new ResponseEntity<> (persistedCategory,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<> (persistedCategory,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 
 
     @RequestMapping(method=RequestMethod.POST, value="/carts/{cartId}/products",produces = MediaType.APPLICATION_JSON_VALUE)
