@@ -1,4 +1,5 @@
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\constants\ShoppingCartConstants.java
+C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\service\impl\CategoryServiceImpl.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\vo\CartVO.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\exception\EmptyCartException.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\exception\ProductNotFoundException.java
@@ -7,8 +8,11 @@ C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\entity\Category.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\vo\ProductVO.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\repository\CartRepository.java
+C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\exception\CategoryNotFoundException.java
+C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\repository\CategoryRepository.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\service\impl\ProductServiceImpl.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\service\impl\CartServiceImpl.java
+C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\service\ICategoryService.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\service\IProductService.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\controller\DemoAppController.java
 C:\Development\PetProjects\microservices\shoppingcart-cloud-native\src\main\java\com\shoppingcart\app\repository\ProductRepository.java

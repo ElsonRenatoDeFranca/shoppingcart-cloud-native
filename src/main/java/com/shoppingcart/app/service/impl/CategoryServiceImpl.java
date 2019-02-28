@@ -12,6 +12,7 @@ import com.shoppingcart.app.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,10 +30,14 @@ public class CategoryServiceImpl implements ICategoryService {
     private IProductService productService;
 
 
+
     @Override
-    public List<Category> listAll() throws CategoryNotFoundException {
-        return categoryRepository.findAll();
+    public List<Category> findAll() {
+        List<Category> categories = new ArrayList<>();
+        categoryRepository.findAll().forEach(categories::add);
+        return categories;
     }
+
 
     @Override
     public Category retrieveCategoryById(Long id) throws CategoryNotFoundException {
@@ -40,9 +45,8 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public Category createCategory() {
-        Category newCategory = new Category();
-        return categoryRepository.save(newCategory);
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -70,4 +74,5 @@ public class CategoryServiceImpl implements ICategoryService {
 
         return category;
     }
+
 }

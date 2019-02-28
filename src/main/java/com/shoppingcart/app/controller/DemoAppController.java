@@ -5,6 +5,7 @@ import com.shoppingcart.app.entity.Cart;
 import com.shoppingcart.app.entity.Category;
 import com.shoppingcart.app.entity.Product;
 import com.shoppingcart.app.exception.CartNotFoundException;
+import com.shoppingcart.app.exception.CategoryNotFoundException;
 import com.shoppingcart.app.exception.EmptyCartException;
 import com.shoppingcart.app.exception.ProductNotFoundException;
 import com.shoppingcart.app.service.ICartService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class DemoAppController {
@@ -57,31 +59,15 @@ public class DemoAppController {
 
     }
 
-    @RequestMapping(method=RequestMethod.POST, value="/category")
-    public ResponseEntity<Category> createCategory() {
-        Category persistedCategory = categoryService.createCategory();
-
-        if(null != persistedCategory.getCategoryId()){
-            return new ResponseEntity<> (persistedCategory,HttpStatus.OK);
-        }else{
-            return new ResponseEntity<> (persistedCategory,HttpStatus.BAD_REQUEST);
-        }
-
-    }
-
-
-
     @RequestMapping(method=RequestMethod.POST, value="/carts/{cartId}/products",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cart> addProductsToCart(@PathVariable(name="cartId") String cartId, @RequestBody Product product) {
         try {
             Cart persistedCart = cartService.addProductToCart(cartId, product);
             return new ResponseEntity<> (persistedCart,HttpStatus.OK);
         } catch (ProductNotFoundException prodEx) {
-            System.err.println(prodEx.getMessage());
             return new ResponseEntity<>(getDummyCart(cartId), HttpStatus.BAD_REQUEST);
         }
         catch(CartNotFoundException cartEx){
-            System.err.println(cartEx.getMessage());
             return new ResponseEntity<>(getDummyCart(cartId), HttpStatus.BAD_REQUEST);
         }
 
@@ -102,6 +88,48 @@ public class DemoAppController {
 
     }
 
+    @RequestMapping(method=RequestMethod.POST, value="/api/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+        Category persistedCategory = categoryService.createCategory(category);
+
+        if(null != persistedCategory.getCategoryId()){
+            return new ResponseEntity<> (persistedCategory,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<> (persistedCategory,HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @RequestMapping(method=RequestMethod.POST, value="/api/category/{categoryId}/products", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Category> addProductsToCategory(@PathVariable(name="categoryId") Long categoryId, @RequestBody Product product) {
+        try {
+            Category persistedCategory = categoryService.addProductToCategory(categoryId, product);
+            return new ResponseEntity<> (persistedCategory,HttpStatus.OK);
+        } catch (ProductNotFoundException | CategoryNotFoundException ex) {
+            return new ResponseEntity<>(getDummyCategory(categoryId), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(method=RequestMethod.DELETE, value="/api/category/{categoryId}/products", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Category> removeProductsFromCategory(@PathVariable(name="categoryId") Long categoryId, @RequestBody Product product) {
+
+        try {
+            Category persistedCategory = categoryService.removeProductFromCategory(categoryId, product);
+            return new ResponseEntity<> (persistedCategory,HttpStatus.OK);
+        } catch (ProductNotFoundException | CategoryNotFoundException exception) {
+            return new ResponseEntity<>(getDummyCategory(categoryId), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @RequestMapping("api/category/listAll")
+    public List<Category> findAll() throws CategoryNotFoundException, ProductNotFoundException {
+
+        return categoryService.findAll();
+    }
+
+
+
     private Cart getDummyCart(String cartId){
 
         Cart cart = new Cart();
@@ -109,5 +137,13 @@ public class DemoAppController {
         cart.setProducts(new ArrayList<>());
         return cart;
     }
+
+    private Category getDummyCategory(Long cartId){
+        Category category = new Category();
+        category.setId(cartId);
+        category.setProducts(new ArrayList<>());
+        return category;
+    }
+
 
 }

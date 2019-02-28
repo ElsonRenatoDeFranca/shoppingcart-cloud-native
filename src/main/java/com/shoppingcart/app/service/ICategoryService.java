@@ -10,8 +10,12 @@ import java.util.List;
 public interface ICategoryService {
 
 
-
-    List<Category> listAll()  throws CategoryNotFoundException;
+    /**
+     *
+     * @return
+     * @throws CategoryNotFoundException
+     */
+    List<Category> findAll()  throws CategoryNotFoundException;
 
     /**
      *
@@ -21,12 +25,19 @@ public interface ICategoryService {
      */
     Category retrieveCategoryById(Long id)  throws CategoryNotFoundException;
 
+    /**
+     *
+     * @return
+     * @throws CategoryNotFoundException
+     */
+    Category retrieveCategoryByLetterOccurrence() throws CategoryNotFoundException;
+
 
     /**
      *
      *
      */
-    Category createCategory();
+    Category createCategory(Category category);
 
 
     /**
