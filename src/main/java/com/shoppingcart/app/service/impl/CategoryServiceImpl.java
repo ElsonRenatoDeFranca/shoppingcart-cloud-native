@@ -13,7 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,20 +43,54 @@ public class CategoryServiceImpl implements ICategoryService {
         return categories;
     }
 
-
     @Override
     public Category retrieveCategoryById(Long id) throws CategoryNotFoundException {
         return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(ShoppingCartConstants.CATEGORY_NOT_FOUND_ERROR_MESSAGE));
     }
 
+    private Long getMaxNumberOfLetters(TreeMap<String, Long> map){
+
+        return map.entrySet()
+                .stream()
+                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+                .get()
+                .getValue();
+    }
+
+    private List<Category> getListOfMaxOccurrencesOfOneletter(TreeMap<String, Long> map){
+
+        Long maxNumberOfOccurrence = getMaxNumberOfLetters(map);
+
+
+        List listOfMaxNumberOfOccurrence = map.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == maxNumberOfOccurrence)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return listOfMaxNumberOfOccurrence;
+
+    }
+
     @Override
-    public Category retrieveCategoryByLetterOccurrence(String letter) throws CategoryNotFoundException {
+    public List<Category> retrieveCategoryByLetterOccurrence(char letter) throws CategoryNotFoundException {
 
         List<Category> categories = new ArrayList<>();
         categoryRepository.findAll().forEach(categories::add);
-        categories.stream().filter(s -> s.getName().contains(letter)).count();
-        return null;
+        TreeMap<String, Long> map = new TreeMap<>();
+
+        for(Category category : categories){
+            Long letterCounter = category.getName().codePoints().filter(character -> character == letter).count();
+            map.put(category.getName(),letterCounter);
+        }
+
+        List listOfMax = getListOfMaxOccurrencesOfOneletter(map);
+
+        return listOfMax;
     }
+
+
+
 
     @Override
     public Category createCategory(Category category) {

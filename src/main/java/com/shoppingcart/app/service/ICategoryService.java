@@ -32,7 +32,7 @@ public interface ICategoryService {
      * @return
      * @throws CategoryNotFoundException
      */
-    Category retrieveCategoryByLetterOccurrence(String letter ) throws CategoryNotFoundException;
+    List<Category> retrieveCategoryByLetterOccurrence(char letter ) throws CategoryNotFoundException;
 
 
     /**

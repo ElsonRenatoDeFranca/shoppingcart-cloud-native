@@ -92,25 +92,25 @@ public class CategoryServiceTest {
     @Test
     public void createCategory_shouldReturnCategory_whenCategoryNameHasMoreLetters() throws CategoryNotFoundException {
 
-
-        Category mockCategory1 = createEmptyCategory(1000L, "Alimentos", false);
-        Category mockCategory2 = createEmptyCategory(1001L, "Vestuario", false);
-        Category mockCategory3 = createEmptyCategory(1002L, "Bebidas", false);
+        Category mockCategory1 = createEmptyCategory(1000L, "Alimento", false);
+        Category mockCategory2 = createEmptyCategory(1001L, "Perfume", false);
+        Category mockCategory3 = createEmptyCategory(1002L, "Elefante", false);
+        Category mockCategory4 = createEmptyCategory(1003L, "Elegante", false);
 
         List<Category> categories = new ArrayList<>();
         categories.add(mockCategory1);
         categories.add(mockCategory2);
         categories.add(mockCategory3);
+        categories.add(mockCategory4);
 
         //When
         when(categoryRepository.findAll()).thenReturn(categories);
 
-        Category newCategory = categoryService.retrieveCategoryByLetterOccurrence("i");
-        //verify(categoryRepository, times(1)).findById(eq(expectedId));
+        List<Category> categoryList = categoryService.retrieveCategoryByLetterOccurrence('e');
 
         //Then
-        assertThat(newCategory, is(notNullValue()));
-        assertThat(newCategory, hasProperty("products", is(notNullValue())));
+        assertThat(categoryList, is(notNullValue()));
+        //assertThat(newCategory, hasProperty("products", is(notNullValue())));
 
     }
 
