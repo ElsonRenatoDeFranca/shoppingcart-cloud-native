@@ -45,6 +45,15 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
+    public Category retrieveCategoryByLetterOccurrence(String letter) throws CategoryNotFoundException {
+
+        List<Category> categories = new ArrayList<>();
+        categoryRepository.findAll().forEach(categories::add);
+        categories.stream().filter(s -> s.getName().contains(letter)).count();
+        return null;
+    }
+
+    @Override
     public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }

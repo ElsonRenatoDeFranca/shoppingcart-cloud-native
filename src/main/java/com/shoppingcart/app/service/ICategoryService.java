@@ -25,12 +25,14 @@ public interface ICategoryService {
      */
     Category retrieveCategoryById(Long id)  throws CategoryNotFoundException;
 
+
     /**
      *
+     * @param letter
      * @return
      * @throws CategoryNotFoundException
      */
-    Category retrieveCategoryByLetterOccurrence() throws CategoryNotFoundException;
+    Category retrieveCategoryByLetterOccurrence(String letter ) throws CategoryNotFoundException;
 
 
     /**
