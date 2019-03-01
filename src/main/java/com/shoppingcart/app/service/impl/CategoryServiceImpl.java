@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,6 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     private Long getMaxNumberOfLetters(TreeMap<String, Long> map){
-
         return map.entrySet()
                 .stream()
                 .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
@@ -57,14 +57,14 @@ public class CategoryServiceImpl implements ICategoryService {
                 .getValue();
     }
 
-    private List<Category> getListOfMaxOccurrencesOfOneletter(TreeMap<String, Long> map){
+    private List<String> getListOfMaxOccurrencesOfOneletter(TreeMap<String, Long> map){
 
         Long maxNumberOfOccurrence = getMaxNumberOfLetters(map);
 
 
         List listOfMaxNumberOfOccurrence = map.entrySet()
                 .stream()
-                .filter(entry -> entry.getValue() == maxNumberOfOccurrence)
+                .filter(entry -> entry.getValue() == maxNumberOfOccurrence && maxNumberOfOccurrence > 0)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
@@ -73,24 +73,16 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public List<Category> retrieveCategoryByLetterOccurrence(char letter) throws CategoryNotFoundException {
+    public List<String> findCategoryNameByLetterOccurrence(char letter) throws CategoryNotFoundException {
 
         List<Category> categories = new ArrayList<>();
         categoryRepository.findAll().forEach(categories::add);
         TreeMap<String, Long> map = new TreeMap<>();
+        categories.forEach(category -> map.put(category.getName(), category.getName().chars().filter(character -> character == letter).count()));
 
-        for(Category category : categories){
-            Long letterCounter = category.getName().codePoints().filter(character -> character == letter).count();
-            map.put(category.getName(),letterCounter);
-        }
+        return getListOfMaxOccurrencesOfOneletter(map);
 
-        List listOfMax = getListOfMaxOccurrencesOfOneletter(map);
-
-        return listOfMax;
     }
-
-
-
 
     @Override
     public Category createCategory(Category category) {

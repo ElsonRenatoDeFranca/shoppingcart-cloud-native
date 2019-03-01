@@ -88,6 +88,16 @@ public class DemoAppController {
 
     }
 
+
+
+
+
+
+
+
+
+
+
     @RequestMapping(method=RequestMethod.POST, value="/api/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         Category persistedCategory = categoryService.createCategory(category);
@@ -122,11 +132,32 @@ public class DemoAppController {
 
     }
 
-    @RequestMapping("api/category/listAll")
+    @RequestMapping(value = "api/category/listAll")
     public List<Category> findAll() throws CategoryNotFoundException, ProductNotFoundException {
-
         return categoryService.findAll();
     }
+
+    @RequestMapping(value ="/api/category/{letter}/products", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<String> findCategoryNameByLetterOccurrence(@PathVariable(name="letter") char letter) throws CategoryNotFoundException, ProductNotFoundException {
+        return categoryService.findCategoryNameByLetterOccurrence(letter);
+    }
+
+
+    @RequestMapping(method=RequestMethod.GET,value="api/product/listByCategory/{categoryId}")
+    public ResponseEntity<Category> findByCategoryId(@PathVariable Long categoryId){
+
+        try {
+            Category category = categoryService.retrieveCategoryById(categoryId);
+            return new ResponseEntity<>(category, HttpStatus.OK);
+
+        }catch(CategoryNotFoundException catEx){
+            return new ResponseEntity<> (getDummyCategory(categoryId),HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
+
+
 
 
 
@@ -138,9 +169,9 @@ public class DemoAppController {
         return cart;
     }
 
-    private Category getDummyCategory(Long cartId){
+    private Category getDummyCategory(Long categoryId){
         Category category = new Category();
-        category.setId(cartId);
+        category.setId(categoryId);
         category.setProducts(new ArrayList<>());
         return category;
     }

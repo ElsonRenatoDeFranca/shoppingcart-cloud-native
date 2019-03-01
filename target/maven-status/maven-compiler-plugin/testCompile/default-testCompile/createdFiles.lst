@@ -1,3 +1,4 @@
-com\shoppingcart\app\demoapp\CartServiceTest.class
 com\shoppingcart\app\demoapp\CartServiceApplicationTests.class
+com\shoppingcart\app\demoapp\CartServiceTest.class
+com\shoppingcart\app\demoapp\CategoryServiceTest.class
 com\shoppingcart\app\demoapp\CartServiceControllerTest.class
